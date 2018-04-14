@@ -65,6 +65,7 @@
     "build": "node scripts/build.js",
     "test:js": "node scripts/test.js --env=jsdom",
     "test": "node scripts/test-truffle.js",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:sol",
     "lint:js": "node_modules/.bin/eslint ./src",
     "lint:css": "stylelint \"src/co*/*\"",
     "lint:sol": "solium  -d contracts/ ./src"

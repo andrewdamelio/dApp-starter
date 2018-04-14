@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import RSVPjson from '../../../build/contracts/RSVP.json';
+import contract from 'truffle-contract';
 import getWeb3 from '../../utils/getWeb3';
 import getNetwork from '../../utils/getNetwork';
+import { etherScanAccount } from '../../utils/etherScan';
 import blockies from 'blockies';
 
 
@@ -12,26 +15,43 @@ import './index.css';
 
 class App extends Component {
   componentWillMount() {
-    getWeb3.then((async ({ web3 }) => {
+    getWeb3.then((({ web3 }) => {
       this.props.context.updateState('SET_WEB3', web3);
       this.props.context.updateState('SET_NETWORK', getNetwork(web3));
 
-
+      this.initContract();
+      // this.initContract('0x9eede2f7a3d9c93e5090b5eaf46ec98056f08f91'); // Ropsten
       this.getBalance();
-      /* Setup contract */
-
-      // const truffleContract = contract(ContractJSON);
-      // truffleContract.setProvider(web3.currentProvider);
-
-      // const truffleContractContractInstance = await truffleContract.deployed();
-      // contractInstance.address
-
-      // const ABI = contractJSON.abi;
-      // const address = truffleContractContractInstance.address;
-      // const Contract = await web3.eth.contract(ABI);
-      // const contractInstance = await Contract.at(address);
-      // this.props.context.updateState('SET_CONTRACT', contractInstance);
     }));
+  }
+
+  async initContract(address = null) {
+    try {
+      let truffleContract = null;
+      let Contract = null;
+      let contractInstance = null;
+      let truffleContractContractInstance = null;
+
+      if (!address) {
+        truffleContract = contract(RSVPjson);
+        truffleContract.setProvider(web3.currentProvider);
+        truffleContractContractInstance = await truffleContract.deployed();
+      }
+
+      const ABI = RSVPjson.abi;
+      const contractAddress = address ? address : truffleContractContractInstance.address;
+
+      Contract = await web3.eth.contract(ABI);
+      contractInstance = await Contract.at(contractAddress);
+
+      this.props.context.updateState('SET_CONTRACT', contractInstance);
+      contractInstance.owner((err, response) => {
+        console.info('Contract Owner:', response);
+      });
+    }
+    catch (err) {
+      console.info(err);
+    }
   }
 
   render() {
@@ -57,21 +77,28 @@ class App extends Component {
 
           <div className="App__web3Account">
             <div><img src={avatar} className="App__avatar" /></div>
-            <div>{ web3.eth.accounts[0] }</div>
+            <div>
+              <a href={this.gotoAccount(web3.eth.accounts[0])}>{ web3.eth.accounts[0] }</a>
+            </div>
             <div>{ web3.fromWei(getBalance()) } ETH</div>
           </div>
-
         </div>
       </main>
     );
   }
 
   getBalance() {
+    const { web3 } = this.props.context;
+
     web3.eth.getBalance(web3.eth.accounts[0], (err, response) => {
       if (response) {
         this.props.context.updateState('SET_BALANCE', response.toNumber());
       }
     });
+  }
+
+  gotoAccount(account) {
+    return etherScanAccount(account, this.props.context.network);
   }
 }
 
