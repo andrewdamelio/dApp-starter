@@ -1,0 +1,30 @@
+.App {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+.App__web3Account {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 4rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.App__avatar {
+  margin: 1rem;
+  border-radius: 50%;
+}

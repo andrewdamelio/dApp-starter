@@ -1,0 +1,20 @@
+/* Debugger */
+
+.Debugger {
+  position: fixed;
+  padding: 1rem;
+  bottom: 0;
+  left: 0;
+  background: powderblue;
+  z-index: 9;
+  width: 250px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  transition: all 0.25s ease-in;
+  transform: translateY(200px);
+}
+
+.Debugger--show {
+  transform: translateX(0);
+}

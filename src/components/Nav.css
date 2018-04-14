@@ -1,0 +1,36 @@
+/* Navbar */
+
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 6px;
+  z-index: 999999;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  background: #0C1A2B;
+}
+
+.Navbar a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+.Navbar__logo {
+  margin: 0 0 0 1rem;
+  background: white;
+  border-radius: 30%;
+  cursor: pointer;
+}
+
+.Navbar__logo svg {
+  transform: translateY(2px);
+  height: 35px;
+  width: 35px;
+}
+
+.Navbar__menu {
+  margin: 0 1rem 0 0;
+}
